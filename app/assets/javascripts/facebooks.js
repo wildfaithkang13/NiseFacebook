@@ -1,5 +1,5 @@
-<script type="text/javascript">
-
+// <script type="text/javascript">
+//
 $(function($) {
 
 	var nav    = $('.nav'),
@@ -14,5 +14,5 @@ $(function($) {
 	});
 });
 
-
-</script>
+//
+// </script>
