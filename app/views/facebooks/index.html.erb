@@ -1,2 +1,158 @@
-<h1>Facebooks#index</h1>
-<p>Find me in app/views/facebooks/index.html.erb</p>
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+<script type="text/javascript">
+jQuery(function($) {
+	var nav = $('#globalNavi'),
+	offset = nav.offset();
+	$(window).scroll(function () {
+	  if($(window).scrollTop() > offset.top) {
+	    nav.addClass('fixed');
+	  } else {
+	    nav.removeClass('fixed');
+	  }
+	});
+});
+</script>
+</head>
+<body>
+	<header>
+		<ul>
+			<li><%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40"}), root_path %></li>
+			<% if user_signed_in? %>
+				<li>
+					<%= form_tag root_path, :method => 'get' do %> <p>
+					    <%= text_field_tag :search, params[:search] %>
+					    <%= submit_tag "Search", :name => nil %></p>
+							<!--<%= image_submit_tag("fLogo.png") %> 画像の大きさを変えたい -->
+					<% end %>
+				</li>
+			<!-- 画像とユーザー名を表示させる-->
+			<li><%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40"}), edit_user_registration_path  %></li>
+			<!--<#%= link_to 'マイページ', edit_user_registration_path %>-->
+			<li><%= link_to "ホーム", root_path %></li>
+			<li><%= link_to "友達を検索", root_path %></li>
+			<!-- 友達リクエスト-->
+			<li><%= link_to image_tag('people.jpg', { :alt => '友達リクエスト', :size => "40x40"}), root_path %></li>
+			<!-- メッセージを開く-->
+			<!-- プルダウンの中にログアウトを仕込む-->
+			<!--
+			<%#= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+			-->
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><%= link_to "ブログ", facebooks_path %></li>
+				</ul
+			</li>
+			<% else %>
+				<li><%= link_to 'ログイン', new_user_session_path %></li>
+				<li><%= link_to 'サインアップ', new_user_registration_path %></li>
+			<% end %>
+		</ul>
+	</header>
+
+<% if user_signed_in? %>
+	<div id="globalNavi">
+		<h1>グローバルナビをスクロール時に固定する方法</h1>
+	</div>
+
+
+<div class="page-container">
+    <div class="page-content">
+			<!--サイドバーの中身 -->
+			<div class="sidebar_left">
+				<p><%= link_to image_tag('people.jpg', { :alt => '友達リクエスト', :size => "40x40"}), root_path %></p>
+				<p>LEFT1</p>
+				<p>LEFT2</p>
+				<p>LEFT3</p>
+				<p>LEFT4</p>
+				<p>LEFT5</p>
+				<p>LEFT6</p>
+				<p>LEFT7</p>
+				<p>LEFT8</p>
+				<p>LEFT9</p>
+				<p>LEFT10</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+				<p>LEFT</p>
+			</div>
+			<!-- サイドバーここまで-->
+			<br>
+        <div class="main-contents ">
+					<div class="wrapper col-md-8 col-md-offset-0 col-sm-10">
+					<div class="panel panel-default">
+					<div class="panel-heading">
+					<p>ステータス<p>
+					</div>
+					<div class="panel-body">
+					<%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40", :align=>"left"}), root_path %>
+					<%= form_for(@facebook) do |f| %>
+					 <%= f.label :content %>
+					 <%= f.text_area :content, :size=>"60x5", placeholder: "今なにしてる？" %>
+					  <br>
+						<hr>
+						<div class="panel-footer">
+						<%= f.file_field :image_url %>
+						<%= f.submit "投稿する"%>
+						</div>
+					<% end %></div></div>
+					<!-- この下に投稿された内容を一覧として表示させる -->
+
+						<% @facebooks.each do |facebook| %>
+		      		<div class="row">
+		        		<div class="panel panel-default">
+									<!-- もしコメントがあった場合はpanel-headingを表示する>-->
+		          		<div class="panel-heading">
+										<p>ああああ<p>
+		          		</div>
+									<!-- ここまで -->
+		          		<div class="panel-body">
+										<p>コメント：<%= facebook.content %></p><br>
+										<!-- 画像があれば画像を表示する-->
+										<p>いいねボタン配置場所</p>
+		          		</div>
+		          		<div class="panel-footer">
+										<!--
+										<%#= link_to "編集", edit_instagram_path(instagram.id), class: 'btn btn-default btn-sm btn-success' %>
+		            		<%#= link_to "削除", instagram_path(instagram.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
+										-->
+										<p>コメント欄を設定する</p>
+		          		</div>
+		        	</div>
+		      	</div>
+		    <% end %>
+			</div>
+    </div>
+</div>
+<% else %>
+<!-- ログインしていない場合は以下のページを表示する-->
+<div class="page-container">
+    <div class="page-content">
+			<div class="notlogin-maincontents ">
+				<br>
+				<br>
+				<br>
+				<br>
+				<p>
+					Facebook使うと、友達や同僚、同級生、仲間<br>
+					たちとつながりと深められます。ケータイ、ス<br>
+					マートフォンからもアクセスできます。
+				</p>
+			</div>
+		</div>
+</div>
+
+<div class="main-contents ">
+
+</div>
+
+<% end %>
+</body>
+</htmL>
