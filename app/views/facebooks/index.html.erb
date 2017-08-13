@@ -42,6 +42,7 @@ jQuery(function($) {
 			<li><%= link_to "ホーム", root_path %></li>
 			<li><%= link_to "友達を検索", root_path %></li>
 			<!-- 友達リクエスト-->
+			<li><%= link_to 'ユーザー一覧', users_path if user_signed_in? %></li>
 			<li><%= link_to image_tag('people.jpg', { :alt => '友達リクエスト', :size => "40x40"}), root_path %></li>
 			<!-- メッセージを開く-->
 			<!-- プルダウンの中にログアウトを仕込む-->

@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
         format.js { render :index }
       else
         format.html { redirect_to facebook_path(@facebook), notice: 'コメント投稿失敗'  }
-        format.html { render :index }
+        format.js { render :index }
       end
     end
   end
@@ -50,5 +50,4 @@ class CommentsController < ApplicationController
       #ブログのどのコメントの情報かを取得する
       @comment=Comment.find(params[:id])
     end
-  end
 end
