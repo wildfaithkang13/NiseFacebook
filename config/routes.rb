@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  devise_for :users, controllers: {
+    registrations: "users/registrations",
+    omniauth_callbacks: "users/omniauth_callbacks"
+  }
+
   get 'facebooks' => 'facebooks#index'
 
-  resources :facebooks, only: [:index, :new, :create]
+  resources :facebooks do
+    resources :comments
+    post :confirm, on: :collection
+  end
 
   root 'facebooks#index'
   #root 'top#index'

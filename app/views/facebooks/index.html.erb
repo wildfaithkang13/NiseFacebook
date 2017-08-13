@@ -17,16 +17,24 @@ jQuery(function($) {
 </script>
 </head>
 <body>
+
 	<header>
 		<ul>
 			<li><%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40"}), root_path %></li>
 			<% if user_signed_in? %>
 				<li>
-					<%= form_tag root_path, :method => 'get' do %> <p>
-					    <%= text_field_tag :search, params[:search] %>
-					    <%= submit_tag "Search", :name => nil %></p>
-							<!--<%= image_submit_tag("fLogo.png") %> 画像の大きさを変えたい -->
-					<% end %>
+				<!-- 検索ボタンの引用元-->
+				<!--https://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
+				<form class="navbar-form navbar-left">
+				  <div class="input-group">
+				    <input type="text" class="form-control" size="60" placeholder="友達、スポット等を検索">
+				    <div class="input-group-btn">
+				      <button class="btn btn-default" type="submit">
+				        <i class="glyphicon glyphicon-search"></i>
+				      </button>
+				    </div>
+				  </div>
+				</form>
 				</li>
 			<!-- 画像とユーザー名を表示させる-->
 			<li><%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40"}), edit_user_registration_path  %></li>
@@ -43,8 +51,9 @@ jQuery(function($) {
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
 				<ul class="dropdown-menu">
-					<li><%= link_to "ブログ", facebooks_path %></li>
-				</ul
+					<!--<li><%= link_to "ブログ", facebooks_path %></li>-->
+					<li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+				</ul>
 			</li>
 			<% else %>
 				<li><%= link_to 'ログイン', new_user_session_path %></li>
@@ -58,8 +67,6 @@ jQuery(function($) {
 		<h1>グローバルナビをスクロール時に固定する方法</h1>
 	</div>
 
-
-<div class="page-container">
     <div class="page-content">
 			<div class="sidebar_left">
 				<p><%= link_to image_tag('people.jpg', { :alt => '友達リクエスト', :size => "40x40"}), root_path %></p>
@@ -83,26 +90,35 @@ jQuery(function($) {
 				<p>LEFT</p>
 			</div>
 			<!-- サイドバーここまで-->
-			<br>
         <div class="main-contents ">
 					<div class="wrapper col-md-8 col-md-offset-0 col-sm-10">
-						<p id="notice"><%= notice %></p>
+						<br><br><br>
 					<div class="panel panel-default">
+						<p id="notice"><%= notice %></p>
 					<div class="panel-heading">
 					<p>ステータス<p>
 					</div>
 					<div class="panel-body">
-					<%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40", :align=>"left"}), root_path %>
-					<%= form_for(@facebook) do |f| %>
-					<%= f.label :title %>
-					<%= f.text_area :title %>
+					<!--
+					<%#= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40", :align=>"left"}), root_path %>
+					-->
+
 					<br>
-					 <%= f.label :content %>
+					<%= form_for(@facebook) do |f| %>
+					<%= f.text_area :title, :size=>"40x1", placeholder: "タイトルを入力してください" %>
+					<br>
 					 <%= f.text_area :content, :size=>"60x5", placeholder: "今なにしてる？" %>
+					 <% if flash[:error].present? %>
+ 				    <ul class="errors">
+ 				      <% flash[:error].each do |msg| %>
+ 				        <li><%= msg %></li>
+ 				      <% end %>
+ 				    </ul>
+ 				  <% end %>
 					  <br>
 						<hr>
 						<div class="panel-footer">
-						<%= f.file_field :image_url %>
+						<%= f.file_field :content_image %>
 						<%= f.submit "投稿する"%>
 						</div>
 					<% end %></div></div>
@@ -111,58 +127,38 @@ jQuery(function($) {
 						<% @facebooks.each do |facebook| %>
 		      		<div class="row">
 		        		<div class="panel panel-default">
-									<!-- もしコメントがあった場合はpanel-headingを表示する>-->
 		          		<div class="panel-heading">
-										<!--
-										<%#= link_to facebook_path(facebook) do %>
-											<h4><strong><%= facebook.title %></strong></h4>
-										<%# end %>
-									-->
+									<%= link_to profile_img(facebook.user) %>
+									<!-- コメントがなければ以下のメッセージを表示する-->
+									<%= facebook.user.name%>さんが投稿しました。
+									<!-- 誰かがコメントした場合は　<%=facebook.user.name%>さんがコメントしました。を表示する　-->
 		          		</div>
 									<!-- ここまで -->
 		          		<div class="panel-body">
+										<!--<h4>タイトル：<%#= facebook.title %></h4><br>-->
+										<h4>タイトル：<%= link_to facebook_path(facebook) do %>
+											<%= facebook.title %>
+										<% end %></h4><br>
 										<p>コメント：<%= facebook.content %></p><br>
-										<!-- 画像があれば画像を表示する-->
-										<% unless facebook.image_url.nil?%>
-											<%= image_tag(facebook.image_url, alt: '投稿写真',:size => "600x600") %>
+										<% unless facebook.content_image.nil?%>
+											<%= image_tag(facebook.content_image, alt: '投稿写真',:size => "600x600") %>
 										<% end %>
-										<p>いいねボタン配置場所</p>
 		          		</div>
 		          		<div class="panel-footer">
-										<!--
-										<%#= link_to "編集", edit_instagram_path(instagram.id), class: 'btn btn-default btn-sm btn-success' %>
-		            		<%#= link_to "削除", instagram_path(instagram.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
-										-->
-										<p>コメント欄を設定する</p>
+										いいねボタン配置場所 / コメント欄を設定する
+										<br>
+										<div id="comments_area">
+										</div>
+										<%= link_to "編集", edit_facebook_path(facebook.id), class: 'btn btn-default btn-sm btn-success' %>
+		            		<%= link_to "削除", facebook_path(facebook.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
+
 		          		</div>
 		        	</div>
 		      	</div>
 		    <% end %>
-			</div>
+		</div>
     </div>
 </div>
-<% else %>
-<!-- ログインしていない場合は以下のページを表示する-->
-<div class="page-container">
-    <div class="page-content">
-			<div class="notlogin-maincontents ">
-				<br>
-				<br>
-				<br>
-				<br>
-				<p>
-					Facebook使うと、友達や同僚、同級生、仲間<br>
-					たちとつながりと深められます。ケータイ、ス<br>
-					マートフォンからもアクセスできます。
-				</p>
-			</div>
-		</div>
-</div>
-
-<div class="main-contents ">
-
-</div>
-
 <% end %>
 </body>
 </htmL>

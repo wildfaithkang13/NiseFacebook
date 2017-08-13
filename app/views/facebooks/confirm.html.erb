@@ -1,0 +1,14 @@
+<h3>以下の内容で、投稿する。</h3>
+
+<%= form_for(@facebook) do |f| %>
+  <%= f.hidden_field :title %>
+  <%= f.hidden_field :content %>
+  <%= f.hidden_field :content_image %>
+
+  <p>タイトル:<%= @facebook.title %></p>
+  <p>本文:<%= @facebook.content %></p>
+  <% unless f.content_image.nil?%>
+    <%= image_tag(f.content_image, alt: '投稿写真',:size => "300x300") %>
+  <% end %>
+  <%= f.submit "投稿する" %>
+<% end %>
