@@ -13,41 +13,42 @@ class CommentsController < ApplicationController
         format.html { render :index }
       end
     end
+  end
 
-    def edit
-      #どのブログの情報かを取得。
-      @facebook = @comment.facebook
-    end
+  def edit
+    #どのブログの情報かを取得。
+    @facebook = @comment.facebook
+  end
 
-    def update
-      if @comment.update(comment_params)
-        redirect_to facebook_path(@comment.facebook), notice: "コメントを更新しました"
-      else
-        render 'index'
-      end
-    end
-
-    def show
-      @facebook = @comment.facebook
+  def update
+    if @comment.update(comment_params)
+      redirect_to facebook_path(@comment.facebook), notice: "コメントを更新しました"
+    else
       render 'index'
     end
+  end
 
-    def destroy
-      @comment.destroy
-      flash.now[:message] = "コメントを削除しました！"
-      #renderで非同期通信となる
-      render 'index'
+  def show
+    @facebook = @comment.facebook
+    render 'index'
+  end
+
+  def destroy
+    @comment.destroy
+    flash.now[:message] = "コメントを削除しました！"
+    #renderで非同期通信となる
+    render 'index'
+  end
+
+  private
+    # ストロングパラメーター
+    def comment_params
+      params.require(:comment).permit(:facebook_id, :content)
     end
 
-    private
-      # ストロングパラメーター
-      def comment_params
-        params.require(:comment).permit(:facebook_id, :content)
-      end
-
-      def set_comment
-        #ブログのどのコメントの情報かを取得する
-        @comment=Comment.find(params[:id])
-      end
+    def set_comment
+      #ブログのどのコメントの情報かを取得する
+      @comment=Comment.find(params[:id])
     end
+  end
 end
