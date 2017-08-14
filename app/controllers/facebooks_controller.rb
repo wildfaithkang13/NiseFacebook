@@ -1,5 +1,6 @@
 class FacebooksController < ApplicationController
   before_action :set_facebook, only: [:edit, :update, :destroy, :show]
+  before_action :set_current_user_image, only: [:index, :edit, :show]
   before_action :authenticate_user!
   def index
     @facebooks = Facebook.all
@@ -7,7 +8,6 @@ class FacebooksController < ApplicationController
     @comment = @facebook.comments.build
     @comments = @facebook.comments
     @user = User.all
-    @current_user = current_user
   end
 
   def new
@@ -26,6 +26,7 @@ class FacebooksController < ApplicationController
   end
 
   def edit
+
   end
 
   def confirm
@@ -63,5 +64,9 @@ class FacebooksController < ApplicationController
 
     def set_facebook
       @facebook = Facebook.find(params[:id])
+    end
+
+    def set_current_user_image
+      @current_user = current_user
     end
 end
