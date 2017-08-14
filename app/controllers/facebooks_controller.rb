@@ -6,6 +6,8 @@ class FacebooksController < ApplicationController
     @facebook = Facebook.new
     @comment = @facebook.comments.build
     @comments = @facebook.comments
+    @user = User.all
+    @current_user = current_user
   end
 
   def new
@@ -47,6 +49,10 @@ class FacebooksController < ApplicationController
   def destroy
     @facebook.destroy
     redirect_to root_path, notice: "投稿内容を削除しました！"
+  end
+
+  def iine
+
   end
 
   private

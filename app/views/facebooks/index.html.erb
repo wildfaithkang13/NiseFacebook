@@ -1,165 +1,135 @@
 <!DOCTYPE html>
+<!-- 参考ページhttp://algo13.net/bootstrap/affix.html-->
 <html>
-<head>
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script type="text/javascript">
-jQuery(function($) {
-	var nav = $('#globalNavi'),
-	offset = nav.offset();
-	$(window).scroll(function () {
-	  if($(window).scrollTop() > offset.top) {
-	    nav.addClass('fixed');
-	  } else {
-	    nav.removeClass('fixed');
-	  }
-	});
-});
-</script>
-</head>
-<body>
-
-	<header>
-		<ul>
-			<li><%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40"}), root_path %></li>
-			<% if user_signed_in? %>
-				<li>
-				<!-- 検索ボタンの引用元-->
-				<!--https://www.w3schools.com/bootstrap/bootstrap_navbar.asp -->
-				<form class="navbar-form navbar-left">
-				  <div class="input-group">
-				    <input type="text" class="form-control" size="60" placeholder="友達、スポット等を検索">
-				    <div class="input-group-btn">
-				      <button class="btn btn-default" type="submit">
-				        <i class="glyphicon glyphicon-search"></i>
-				      </button>
-				    </div>
-				  </div>
-				</form>
-				</li>
-			<!-- 画像とユーザー名を表示させる-->
-			<li><%= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40"}), edit_user_registration_path  %></li>
-			<!--<#%= link_to 'マイページ', edit_user_registration_path %>-->
-			<li><%= link_to "ホーム", root_path %></li>
-			<li><%= link_to "友達を検索", root_path %></li>
-			<!-- 友達リクエスト-->
-			<li><%= link_to 'ユーザー一覧', users_path if user_signed_in? %></li>
-			<li><%= link_to image_tag('people.jpg', { :alt => '友達リクエスト', :size => "40x40"}), root_path %></li>
-			<!-- メッセージを開く-->
-			<!-- プルダウンの中にログアウトを仕込む-->
-			<!--
-			<%#= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
-			-->
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-				<ul class="dropdown-menu">
-					<!--<li><%= link_to "ブログ", facebooks_path %></li>-->
-					<li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
-				</ul>
-			</li>
-			<% else %>
-				<li><%= link_to 'ログイン', new_user_session_path %></li>
-				<li><%= link_to 'サインアップ', new_user_registration_path %></li>
-			<% end %>
-		</ul>
-	</header>
-
-<% if user_signed_in? %>
-	<div id="globalNavi">
-		<h1>グローバルナビをスクロール時に固定する方法</h1>
-	</div>
-
-    <div class="page-content">
-			<div class="sidebar_left">
-				<p><%= link_to image_tag('people.jpg', { :alt => '友達リクエスト', :size => "40x40"}), root_path %></p>
-				<p>LEFT1</p>
-				<p>LEFT2</p>
-				<p>LEFT3</p>
-				<p>LEFT4</p>
-				<p>LEFT5</p>
-				<p>LEFT6</p>
-				<p>LEFT7</p>
-				<p>LEFT8</p>
-				<p>LEFT9</p>
-				<p>LEFT10</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-				<p>LEFT</p>
-			</div>
-			<!-- サイドバーここまで-->
-        <div class="main-contents ">
-					<div class="wrapper col-md-8 col-md-offset-0 col-sm-10">
-						<br><br><br>
-					<div class="panel panel-default">
-						<p id="notice"><%= notice %></p>
-					<div class="panel-heading">
-					<p>ステータス<p>
-					</div>
-					<div class="panel-body">
-					<!--
-					<%#= link_to image_tag('fLogo.png', { :alt => 'Facebookのロゴ', :size => "40x40", :align=>"left"}), root_path %>
-					-->
-
-					<br>
-					<%= form_for(@facebook) do |f| %>
-					<%= f.text_area :title, :size=>"40x1", placeholder: "タイトルを入力してください" %>
-					<br>
-					 <%= f.text_area :content, :size=>"60x5", placeholder: "今なにしてる？" %>
-					 <% if flash[:error].present? %>
- 				    <ul class="errors">
- 				      <% flash[:error].each do |msg| %>
- 				        <li><%= msg %></li>
- 				      <% end %>
- 				    </ul>
- 				  <% end %>
-					  <br>
-						<hr>
-						<div class="panel-footer">
-						<%= f.file_field :content_image %>
-						<%= f.submit "投稿する"%>
-						</div>
-					<% end %></div></div>
-					<!-- この下に投稿された内容を一覧として表示させる -->
-
-						<% @facebooks.each do |facebook| %>
-		      		<div class="row">
-		        		<div class="panel panel-default">
-		          		<div class="panel-heading">
-									<%= link_to profile_img(facebook.user) %>
-									<!-- コメントがなければ以下のメッセージを表示する-->
-									<%= facebook.user.name%>さんが投稿しました。
-									<!-- 誰かがコメントした場合は　<%=facebook.user.name%>さんがコメントしました。を表示する　-->
-		          		</div>
-									<!-- ここまで -->
-		          		<div class="panel-body">
-										<!--<h4>タイトル：<%#= facebook.title %></h4><br>-->
-										<h4>タイトル：<%= link_to facebook_path(facebook) do %>
-											<%= facebook.title %>
-										<% end %></h4><br>
-										<p>コメント：<%= facebook.content %></p><br>
-										<% unless facebook.content_image.nil?%>
-											<%= image_tag(facebook.content_image, alt: '投稿写真',:size => "600x600") %>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.1.0.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+    (function(window, $) {
+      'use strict';
+      $(function() {
+        var m = $('#main');
+        // スクロール位置と連動させない場合は不要(scrollspy用)
+        $(document.body).scrollspy({ target: '.algo13-sidebar' });
+        // スクロール位置と連動させない場合は不要(scrollspy用)
+        $(window).on('load', function() { $(document.body).scrollspy('refresh') });
+        // 固定サイドバーのスクロール追従開始＆終了位置の設定(affix用)
+        setTimeout(function() {
+          $('.algo13-sidebar').affix({
+            offset: {
+              top: function() {
+                return (this.top = m.offset().top);
+              }
+            }
+          })
+        }, 100);
+      });
+    })(window, jQuery);
+    </script>
+  </head>
+  <body>
+    <%= render 'header' %><br><br><br>
+    <% if user_signed_in? %>
+        <div class = "row">
+          <div class="col-xs-2" style="background:#CCC;">
+            <center>
+            <p><%= link_to profile_img(@current_user), edit_user_registration_path %><%= @current_user.name%></p>
+            <p><%= link_to 'ニュースフィールド'%><p>
+            <p><%= link_to 'Messanger'%><p>
+            <h5>発見</h5>
+            <p><%= link_to 'イベント'%><p>
+            <p><%= link_to 'Facebookページ'%><p>
+            <p><%= link_to 'グループ'%><p>
+            <p><%= link_to '友達リスト'%><p>
+            <p><%= link_to 'インサイト'%><p>
+            <p><%= link_to 'ゲーム'%><p>
+            <p><%= link_to 'ライブ動画'%><p>
+            <p><%= link_to '過去のこの日'%><p>
+            <p><%= link_to 'Poke'%><p>
+            <p><%= link_to 'ゲームフィールド'%><p>
+            <p><%= link_to 'もっと見る...'%><p>
+            <h5>作成</h5>
+            <p>
+              <%= link_to '広告'%>
+              <%= link_to 'ページ'%>
+              <%= link_to 'グループ'%>
+              <%= link_to 'イベント'%>
+            <p>
+            </center>
+          </div>
+          <div class="col-xs-6" style="background:#CCC;">
+            <div class="panel panel-default">
+							<p id="notice"><%= notice %></p>
+							<div class="panel-heading">
+								<p>ステータス<p></div>
+									<%= form_for(@facebook) do |f| %>
+									<div class="panel-body"><br>
+										<%= f.text_area :title, :size=>"40x1", placeholder: "タイトルを入力してください" %><br>
+										<%= f.text_area :content, :size=>"60x5", placeholder: "今なにしてる？" %>
+										<% if flash[:error].present? %>
+										<ul class="errors">
+											<% flash[:error].each do |msg| %>
+											<li><%= msg %></li>
+											<% end %>
+										</ul>
 										<% end %>
-		          		</div>
-		          		<div class="panel-footer">
-										いいねボタン配置場所 / コメント欄を設定する
+									</div>
+									<div class="panel-footer">
+										<%= f.file_field :content_image %>
+										<%= f.submit "投稿する"%>
+									</div>
+									<% end %>
+								</div>
+                <div id="main"></div>
+                <% @facebooks.each do |facebook| %>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<%= link_to profile_img(facebook.user) %>
+										<%= facebook.user.name%>さんが投稿しました。
+									</div>
+									<!--  panel-headingに対する閉じタグ-->
+									<div class="panel-body">
+										<h4>タイトル：
+											<%= link_to facebook_path(facebook) do %>
+											<%= facebook.title %>
+											<% end %>
+										</h4><br>
+										<p>コメント：
+											<%= facebook.content %>
+										</p><br>
+										<% unless facebook.content_image.nil?%>
+										<%= image_tag(facebook.content_image, alt: '投稿写真',:size => "600x600") %>
+										<% end %>
+									</div>
+									<!-- panel-bodyに対する閉じタグ -->
+									<div class="panel-footer">
+										<%= form_tag({controller: "facebook", action: "iine"}, {data: {remote: true}}) do %>
+										<%= submit_tag("いいね", name: nil) %>
+										<% end %>
 										<br>
-										<div id="comments_area">
-										</div>
 										<%= link_to "編集", edit_facebook_path(facebook.id), class: 'btn btn-default btn-sm btn-success' %>
-		            		<%= link_to "削除", facebook_path(facebook.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
-
-		          		</div>
-		        	</div>
-		      	</div>
-		    <% end %>
-		</div>
-    </div>
-</div>
-<% end %>
-</body>
+										<%= link_to "削除", facebook_path(facebook.id), method: :delete, data: { confirm: '本当に削除していいですか？'}, class: 'btn btn-default btn-sm btn btn-danger' %>
+									</div>
+								</div>
+								<% end %>
+          </div>
+          <div class="col-xs-4" style="background:#CCC;">
+              <nav class="algo13-sidebar hidden-print"><!-- hidden-xs -->
+                <ul class="nav">
+                  <li>
+                    <h5>今日はFecebookさんの誕生日です。</h5>
+                  </li>
+                  <p>友達リクエスト</p>
+  								<% @user.first(6).each do |user| %>
+  								<%= link_to profile_img(user) %>
+  								<%= user.name %><br>
+  								<button class="btn btn-default button" type="submit">
+  									<font size="1">友達リクエストを承認</font>
+  								</button><br>
+  								<% end %><br>
+                </ul>
+              </nav>
+        </div>
+    <% end %>
+  </body>
 </htmL>
