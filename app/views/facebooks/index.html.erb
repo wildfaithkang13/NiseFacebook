@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <!-- 参考ページhttp://algo13.net/bootstrap/affix.html-->
 <html>
   <head>
@@ -98,7 +98,7 @@
 										<p>コメント：
 											<%= facebook.content %>
 										</p><br>
-										<% unless facebook.content_image.nil?%>
+										<% unless facebook.content_image.blank?%>
 										<%= image_tag(facebook.content_image, alt: '投稿写真',:size => "600x600") %>
 										<% end %>
 									</div>
