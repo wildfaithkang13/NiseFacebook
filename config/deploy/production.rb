@@ -60,6 +60,6 @@
 #     # password: 'please use keys'
 #   }
 
-
-server '172-31-25-153', user: 'app', roles: %w{app db web}
+#パブリックのIPアドレスを設定
+server '13.114.148.3', user: 'app', roles: %w{app db web}
 set :ssh_options, keys: '/Users/user/.ssh/id_rsa'
