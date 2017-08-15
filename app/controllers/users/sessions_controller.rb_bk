@@ -1,0 +1,40 @@
+class Users::SessionsController < Devise::SessionsController
+#サインアップをするとDeviseのSessionControllerの
+#newアクションが実行される(ログで確認済み)
+#ログイン画面にてメール送信のメッセージを表示させるためSessionsControllerを
+#継承したコントローラを定義
+
+# def new
+#   super
+#   raise
+# end
+#
+#
+# def create
+#   super
+#   flash.[:notice] = "メール認証をお願いします"
+# end
+# end
+
+private
+
+  # Receives a resource and check if it is valid by calling valid_for_authentication?
+  # An optional block that will be triggered while validating can be optionally
+  # given as parameter. Check Devise::Models::Authenticatable.valid_for_authentication?
+  # for more information.
+  #
+  # In case the resource can't be validated, it will fail with the given
+  # unauthenticated_message.
+  def validate(resource, &block)
+    result = resource && resource.valid_for_authentication?(&block)
+
+    if result
+      true
+    else
+      if resource
+        fail!(resource.unauthenticated_message)
+        binding.pry
+      end
+      false
+    end
+  end

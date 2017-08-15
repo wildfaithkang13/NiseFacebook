@@ -19,6 +19,7 @@ gem 'omniauth-facebook'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'faker'
+gem 'fog'
 #開発環境用の設定
 group :development do
   gem 'dotenv-rails'
