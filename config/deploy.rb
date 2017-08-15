@@ -4,7 +4,7 @@ lock '3.6.0'
 set :application, 'NiseFacebook'
 
 # cloneするgitのレポジトリ（xxxxxxxx：ユーザ名、yyyyyyyy：アプリケーション名）
-set :repo_url, 'https://github.com/wildfaithkang13/Daikadai3'
+set :repo_url, 'https://github.com/wildfaithkang13/NiseFacebook'
 
 # deployするブランチ。デフォルトはmasterなのでなくても可。
 set :branch, ENV['BRANCH'] || 'master'
