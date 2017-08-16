@@ -17,7 +17,7 @@
         </div>
       </form>
     </div>
-    <li><%= link_to profile_img(@current_user), edit_user_registration_path %></li>
+    <li><%= link_to login_user_img(@current_user), edit_user_registration_path %></li>
     <li><%= link_to "ホーム", root_path %></li>
     <li><%= link_to "友達を検索", root_path %></li>
     <li><%= link_to 'ユーザー一覧', users_path if user_signed_in? %></li>

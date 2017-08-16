@@ -9,6 +9,5 @@ module ApplicationHelper
       img_url = 'no_image.png'
       image_tag(img_url, alt: user.name, :size => "50x50")
     end
-
   end
 end

@@ -14,11 +14,13 @@ Rails.application.routes.draw do
   get 'facebooks' => 'facebooks#index'
 
   resources :facebooks do
+    #urlはfacebook_id/commentsとなる
     resources :comments
     post :confirm, on: :collection
   end
 
   resources :conversations do
+    #urlはonversation/conversation_id/messageとなる
     resources :messages
   end
 

@@ -52,10 +52,6 @@ class FacebooksController < ApplicationController
     redirect_to root_path, notice: "投稿内容を削除しました！"
   end
 
-  def iine
-
-  end
-
   private
     def facebooks_params
       #画像がアップロードできるようになったらpermitにimage_urlを追加する

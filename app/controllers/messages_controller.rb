@@ -5,6 +5,7 @@ class MessagesController < ApplicationController
 
   def index
     @messages = @conversation.messages
+    @current_user = current_user
     if @messages.length > 10
       @over_ten = true
       @messages = @messages[-10..-1]
@@ -28,7 +29,11 @@ class MessagesController < ApplicationController
     @message = @conversation.messages.new(message_params)
     if @message.save
       redirect_to conversation_messages_path(@conversation)
+    else
+      #メッセージの投稿に失敗した場合
+      redirect_to conversation_messages_path(@conversation), notice: "メッセージ投稿に失敗しました。"
     end
+   #存在しない場合はデフォルトである、create.html.erbを探そうとする
   end
 
   private

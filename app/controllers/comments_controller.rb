@@ -4,13 +4,18 @@ class CommentsController < ApplicationController
     @comment = current_user.comments.build(comment_params)
     @facebook = @comment.facebook
 
+
     respond_to do |format|
+      #binding.pry
       if @comment.save
         format.html { redirect_to facebook_path(@facebook), notice: 'コメントを投稿しました。' }
         format.js { render :index }
       else
+        #binding.pry
         format.html { redirect_to facebook_path(@facebook), notice: 'コメント投稿失敗'  }
+        flash.now[:notice] = 'コメント送信失敗'
         format.js { render :index }
+
       end
     end
   end
