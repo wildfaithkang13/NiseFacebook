@@ -3,7 +3,10 @@ class FacebooksController < ApplicationController
   before_action :set_current_user_image, only: [:index, :edit, :show]
   before_action :authenticate_user!
   def index
-    @facebooks = Facebook.all
+    #@facebooks = Facebook.all
+    @facebooks = Facebook.all.order("updated_at DESC")
+    #@facebooks = Facebook.find(:all, :order => "updated_at ASC")
+
     @facebook = Facebook.new
     @comment = @facebook.comments.build
     @comments = @facebook.comments
