@@ -84,14 +84,12 @@
                 <% @facebooks.each do |facebook| %>
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<%= link_to profile_img(facebook.user) %>
+										<%= link_to profile_img(facebook.user) %><br>
 										<%= facebook.user.name%>さんが投稿しました。 最終更新日：<%= facebook.updated_at %>
 									</div>
-									<!--  panel-headingに対する閉じタグ-->
 									<div class="panel-body">
 										<h4>タイトル：
 											<%= link_to facebook_path(facebook) do %>
-                      <!--<%#= link_to facebook_comments_path(facebook) do %>-->
 											<%= facebook.title %>
 											<% end %>
 										</h4><br>
@@ -102,7 +100,6 @@
 										<%= image_tag(facebook.content_image, alt: '投稿写真',:size => "600x600") %>
 										<% end %>
 									</div>
-									<!-- panel-bodyに対する閉じタグ -->
 									<div class="panel-footer">
 										<%= form_tag({controller: "facebook", action: "iine"}, {data: {remote: true}}) do %>
 										<%= submit_tag("いいね", name: nil) %>
