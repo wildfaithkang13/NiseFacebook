@@ -84,7 +84,7 @@
                 <% @facebooks.each do |facebook| %>
 								<div class="panel panel-default">
 									<div class="panel-heading">
-										<%= link_to profile_img(facebook.user) %><br>
+										<%= profile_img(facebook.user) %><br>
 										<%= facebook.user.name%>さんが投稿しました。 最終更新日：<%= facebook.updated_at %>
 									</div>
 									<div class="panel-body">
