@@ -3,6 +3,7 @@ before_action :authenticate_user!
   def index
     @users = User.all
     @conversations = Conversation.all
+    @current_user = current_user
   end
 
   def create
