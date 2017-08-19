@@ -85,7 +85,8 @@
 								<div class="panel panel-default">
 									<div class="panel-heading">
 										<%= link_to profile_img(facebook.user) %>
-										<%= facebook.user.name%>さんが投稿しました。
+										<%= facebook.user.name%>さんが投稿しました。<br>
+                    最終更新日：<%= facebook.updated_at %>
 									</div>
 									<!--  panel-headingに対する閉じタグ-->
 									<div class="panel-body">
